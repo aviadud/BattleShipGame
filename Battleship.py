@@ -1,8 +1,15 @@
 ##############################################################################
 # FILE : Battleship.py
 # WRITER : Aviad Dudkewitz
-# DESCRIPTION: This program run the battleship game.
-##############################################################################
+# DESCRIPTION: This program run the battleship game. This game uses an Internet
+# connection to allow two players to play against each other. Also it allow to
+# play against a random choosing opponent.
+# To run the game, the given arguments for the program should be as follows:
+# <player_type> <port> <ip>
+# player_type - "human" or "random"
+# port - self explanatory.
+# ip - server should omit that, and client should input the server ip.
+# ##############################################################################
 import sys
 import socket
 from communicator import Communicator
@@ -423,7 +430,8 @@ if __name__ == '__main__':
         player_type = sys.argv[1]
         port = int(sys.argv[2])
         game = Game(NUM_OF_ROW, NUM_OF_COL)
-        print(socket.gethostbyname(socket.gethostname()))
+        print(socket.gethostbyname(socket.gethostname())) # prints the ip
+        # address to aid connecting to the server.
         if len(sys.argv) == MAX_ARG_NUM:
             ip = sys.argv[3]
             player_num = game.PLAYER2

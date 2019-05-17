@@ -1,0 +1,35 @@
+===============================================================================
+                            Battle Ship Game
+===============================================================================
+by: aviad dudkevich
+============
+=  Files:  =
+============
+(code files):
+board.py -
+game.py -
+ships.py -
+communicator.py -
+Battleship.py -
+(images):
+background.png
+target.png
+tile.png
+bshb.png - battle ship horizontal back
+bshbd.png - " " " back damaged
+bshf.png - " " " front
+bshfd.png - " " " front damaged
+bshm.png -  " " " middle
+bshmd.png - " " " middle damaged
+bsvb.png - battle ship vertical back
+bsvbd.png - " " " back damaged
+bsvf.png - " " " front
+bsvfd.png - " " " front damaged
+bsvm.png -  " " " middle
+bsvmd.png - " " " middle damaged
+
+
+==================
+=  Description:  =
+==================
+
