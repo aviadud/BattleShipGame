@@ -74,8 +74,17 @@ LOSE_MSG = "You lose..."
 
 
 class GUI:
+    """
+    The GUI of the battle ship game and run the game.
+    """
 
     def __init__(self, root, game, port, ip=None):
+        """
+        :param root: tkinter root.
+        :param game: the game object.
+        :param port: for connection.
+        :param ip: for connection.
+        """
         self._root = root
         self.__game = game
         self.__state = CONNECTING
@@ -114,6 +123,9 @@ class GUI:
                 self.__self_tiles.append(SelfTile(x,y,self._root,self))
 
     def __fix_display_msg(self):
+        """
+        replace the shown massage to the correct one.
+        """
         if self.__state == CONNECTING:
             self._canvas.itemconfigure(self.__display_msg, text=CONNECTING_MSG)
         elif self.__state == SETTING_UP:
@@ -134,6 +146,10 @@ class GUI:
                 self._canvas.itemconfigure(self.__display_msg, text=LOSE_MSG)
 
     def __check_connection(self):
+        """
+        check if connection was established and start the game. if not,
+        check again after a period of time.
+        """
         if self.__communicator.is_connected():
             self.__state = SETTING_UP
             self.__enemy_placed_ships=0
@@ -149,11 +165,19 @@ class GUI:
             self._root.after(WAIT_PERIOD, self.__check_connection)
 
     def __random_place_ship(self):
+        """
+        placing a ship for a random player.
+        """
         self.__ship_dir = choice([Board.V_DIR, Board.H_DIR])
         self.player_place_a_ship(randint(0, NUM_OF_ROW - 1),
                                  randint(0, NUM_OF_COL - 1))
 
     def player_place_a_ship(self, row, col):
+        """
+        placing a ship on the player board.
+        :param row: the chosen row.
+        :param col: the chosen column.
+        """
         if self.__game.set_a_ship(player_num, col, row,
                             SHIPS_SIZES[self.__ship_index], self.__ship_dir):
             self.__communicator.send_message("%d,%d,%d," %
@@ -176,6 +200,14 @@ class GUI:
                 self._root.after(LONGER_WAIT_PERIOD, self.__random_place_ship)
 
     def __create_a_ship(self, player, col, row, length, direction):
+        """
+        creating a new ship on board.
+        :param player: SELF or OPPONENT
+        :param col: integer.
+        :param row: integer.
+        :param length: integer.
+        :param direction: Board.H_DIR or Board.V_DIR
+        """
         for i in range(length):
             current_tile = self.get_tile(row, col, player)
             if i==0:
@@ -201,12 +233,18 @@ class GUI:
                 row += 1
 
     def __switch_v_h(self, event):
+        """
+        switch between placing a ship horizontally or vertically.
+        """
         if self.__ship_dir == Board.H_DIR:
             self.__ship_dir = Board.V_DIR
         elif self.__ship_dir == Board.V_DIR:
             self.__ship_dir = Board.H_DIR
 
     def __start_game(self):
+        """
+        start the game after the ships where placed.
+        """
         if self.__enemy_placed_ships == len(SHIPS_SIZES) and\
                 self.__ship_index == len(SHIPS_SIZES):
             self.__game.start_game()
@@ -424,6 +462,9 @@ def valid_input(arg):
         return False
 
 
+"""
+The main program:
+"""
 if __name__ == '__main__':
     if valid_input(sys.argv):
         root = tk.Tk()
