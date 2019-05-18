@@ -1,3 +1,8 @@
+##############################################################################
+# FILE : game.py
+# WRITER : intro2cs course teachers at HU.
+# DESCRIPTION: Implements a non-blocking socket interface to use with tkinter.
+##############################################################################
 import socket
 
 

@@ -49,7 +49,7 @@ SHIP_BOTTOM_V = ("bsvb.png", "bsvbd.png")
 SHIP_FRONT_H = ("bshf.png", "bshfd.png")
 SHIP_MIDDLE_H = ("bshm.png", "bshmd.png")
 SHIP_BOTTOM_H = ("bshb.png", "bshbd.png")
-#moods:
+# states:
 CONNECTING = 0
 SETTING_UP = 1
 WAITING_FOR_OPPONENT = 2
