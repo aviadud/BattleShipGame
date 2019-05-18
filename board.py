@@ -1,12 +1,24 @@
+##############################################################################
+# FILE : board.py
+# WRITER : Aviad Dudkewitz
+# DESCRIPTION: This program contains the Board class and BoardTile class.
+##############################################################################
 from ships import *
 
 
 class Board:
-
+    """
+    represent battle ship board.
+    """
     V_DIR = Ship.V_DIR
     H_DIR = Ship.H_DIR
 
     def __init__(self, num_of_row, num_of_col):
+        """
+        allow board to be not equilateral rectangle.
+        :param num_of_row: integer.
+        :param num_of_col: integer.
+        """
         self.num_of_col = num_of_col
         self.num_of_row = num_of_row
         self.__board = []
@@ -20,12 +32,12 @@ class Board:
 
     def place_a_ship(self,x,y,length,direction):
         """
-
-        :param x:
-        :param y:
-        :param length:
-        :param direction:
-        :return: True if the ship was placed, False otherwise
+        place a ship in valid coordinate on the board.
+        :param x: integer.
+        :param y: integer.
+        :param length: integer.
+        :param direction: Ship.V_DIR or Ship.H_DIR
+        :return: True if the ship was placed, False otherwise.
         """
         if direction == Board.V_DIR:
             y2 = y+(length-1)
@@ -46,8 +58,8 @@ class Board:
     def attack(self,x,y):
         """
         attack a spot
-        :param x:
-        :param y:
+        :param x: integer.
+        :param y: integer.
         :return: return the ship that got attacked, or None if miss.
         """
         if self.__board[x][y].got_a_hit():
@@ -59,13 +71,31 @@ class Board:
             return return_ship
 
     def can_attack_point(self, x, y):
+        """
+        :param x: integer.
+        :param y: integer.
+        :return: true if the tile at the given coordinate got attacked,
+        false otherwise or for invalid coordinate.
+        """
         return not self.__board[x][y].got_a_hit() and 0<=x<=self.num_of_col\
                                         and 0<=y<=self.num_of_row
 
     def num_of_ships(self):
+        """
+        :return: number if alive ships.
+        """
         return self.__num_of_alive_ships
 
     def __check_if_tiles_free(self, x1, y1, x2, y2):
+        """
+        check if the given tiles from (x1,y1) to (x2,y2) are free from other
+         ships and valid.
+        :param x1: integer.
+        :param y1: integer.
+        :param x2: integer.
+        :param y2: integer.
+        :return: true or false
+        """
         if x1 <0 or x2> self.num_of_col-1 or y1<0 or y2 > self.num_of_row-1:
             return False
         for x in range(x1,x2+1):
@@ -75,6 +105,12 @@ class Board:
         return True
 
     def print_board(self, reveal_ships):
+        """
+        This method meant for debugging.
+        :param reveal_ships: true or false to show the ships on board (to hide
+        enemy ships).
+        :return: a string representing the board.
+        """
         return_string = ""
         for y in range(self.num_of_row):
             return_string += "-"*(self.num_of_col * 2+1) + "\n|"
@@ -86,12 +122,19 @@ class Board:
         print(return_string)
 
     def get_all_ships_cords(self):
+        """
+        :return: a list of pairs of all ships coordinates.
+        """
         result = []
         for ship in self.__ships:
             result += ship.get_coords()
         return result
 
+
 class BoardTile:
+    """
+    represent a tile in the game board.
+    """
 
     GOT_HIT_OC_SYB = "X"
     GOT_HIT_EMPTY_SYB = "#"
@@ -99,6 +142,10 @@ class BoardTile:
     NONE_SYB = " "
 
     def __init__(self, x, y,):
+        """
+        :param x: integer.
+        :param y: integer.
+        """
         self.__x = x
         self.__y = y
         self.__got_hit = False
@@ -106,6 +153,10 @@ class BoardTile:
         self.__ship = None
 
     def add_ship(self, ship):
+        """
+        make tile occupied and get a reference to the ship.
+        :param ship: the ship that occupied the tile.
+        """
         self.__ship = ship
         self.__is_occupied = True
 
@@ -120,12 +171,23 @@ class BoardTile:
         return None
 
     def got_a_hit(self):
+        """
+        :return: if the tile was attacked.
+        """
         return self.__got_hit
 
     def is_occupied(self):
+        """
+        :return: if a ship was placed in the tile.
+        """
         return self.__is_occupied
 
     def tile_symble(self, reveal_ship):
+        """
+        :param reveal_ship: true to show the ship, false to show the ship
+        only if got hit.
+        :return: a character representing the tile.
+        """
         if self.__got_hit:
             if self.__is_occupied:
                 return BoardTile.GOT_HIT_OC_SYB
