@@ -381,8 +381,16 @@ class GUI:
 
 
 class Tile:
-
+    """
+    represent a tile in the gui.
+    """
     def __init__(self, col, row, root, gui):
+        """
+        :param col: an integer.
+        :param row: an integer.
+        :param root: tkinter root.
+        :param gui: the gui object.
+        """
         self._col = col
         self._row = row
         self._root = root
@@ -403,15 +411,28 @@ class Tile:
         self._got_hit = False
 
     def enter_tile(self, event):
+        """
+        when the mouse enter the tile area
+        """
         pass
 
     def leave_tile(self, event):
+        """
+        when the mouse leave the tile area
+        """
         pass
 
     def tile_chosen(self, event):
+        """
+        when the mouse click in the tile area
+        """
         pass
 
     def add_ship(self, images):
+        """
+        add a ship to the tile
+        :param images: the image to display
+        """
         self._is_occupied = True
         self._ship_img_files = images
         self._ship_img = tk.PhotoImage(file=self._ship_img_files[0])
@@ -419,9 +440,15 @@ class Tile:
         self._canvas.itemconfigure(self._ship, image=self._ship_img)
 
     def show_ship(self):
+        """
+        show the ship if hidden.
+        """
         self._canvas.itemconfigure(self._ship, state=tk.NORMAL)
 
     def got_a_hit(self):
+        """
+        handle hit event.
+        """
         self._got_hit = True
         if self._is_occupied:
             self._ship_img = tk.PhotoImage(file=self._ship_img_files[1])
@@ -432,8 +459,16 @@ class Tile:
 
 
 class EnemyTile(Tile):
-
+    """
+    represent an enemy tile in the gui.
+    """
     def __init__(self, col, row, root, gui):
+        """
+        :param col: an integer.
+        :param row: an integer.
+        :param root: tkinter root.
+        :param gui: the gui object.
+        """
         super().__init__(col, row, root, gui)
         self._canvas.place(relx=0, anchor=tk.NW, x= col*TILE_W + ENEMY_BOARD_X,
                                                 y= row*TILE_H + ENEMY_BOARD_Y)
@@ -442,20 +477,32 @@ class EnemyTile(Tile):
                                     image=self._target_img, state=tk.HIDDEN)
 
     def enter_tile(self, event):
+        """
+        when the mouse enter the tile area
+        """
         if self._gui.state() == PLAYER_TURN and not self._got_hit:
             self._canvas.itemconfigure(self._highlight, state=tk.NORMAL)
 
     def leave_tile(self, event):
+        """
+        when the mouse leave the tile area
+        """
         if self._gui.state() == PLAYER_TURN and not self._got_hit:
             self._canvas.itemconfigure(self._highlight, state=tk.HIDDEN)
 
     def tile_chosen(self, event):
+        """
+        when the mouse click in the tile area
+        """
         if self._gui.state() == PLAYER_TURN and not self._got_hit:
             self._canvas.itemconfigure(self._highlight, state=tk.HIDDEN)
             self._gui.play_a_turn(self._col, self._row)
 
 
 class SelfTile(Tile):
+    """
+    represent the player tile in the gui.
+    """
     def __init__(self, col, row, root, gui):
         super().__init__(col, row, root, gui)
         self._canvas.place(relx=0, anchor=tk.NW,
@@ -463,14 +510,23 @@ class SelfTile(Tile):
                            y=row * TILE_H + SELF_BOARD_Y)
 
     def enter_tile(self, event):
+        """
+        when the mouse enter the tile area
+        """
         if self._gui.state() == SETTING_UP and not self._is_occupied:
             self._canvas.configure(bg="white")
 
     def leave_tile(self, event):
+        """
+        when the mouse leave the tile area
+        """
         if self._gui.state() == SETTING_UP and not self._is_occupied:
             self._canvas.configure(bg=TILE_BG)
 
     def tile_chosen(self, event):
+        """
+        when the mouse click in the tile area
+        """
         if self._gui.state() == SETTING_UP and not self._is_occupied:
             self._gui.player_place_a_ship(self._row, self._col)
 
