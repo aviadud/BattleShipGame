@@ -101,6 +101,9 @@ class GUI:
         self.__check_connection()
 
     def __place_widgets(self):
+        """
+        place the widgets on screen.
+        """
         # background
         self.__background_img = tk.PhotoImage(file=BACKGROUND_IMG)
         self.__tile_img = tk.PhotoImage(file=TILE_IMG)
@@ -152,8 +155,8 @@ class GUI:
         """
         if self.__communicator.is_connected():
             self.__state = SETTING_UP
-            self.__enemy_placed_ships=0
-            self.__ship_index=0
+            self.__enemy_placed_ships = 0
+            self.__ship_index = 0
             self._canvas.itemconfigure(self.__display_msg,
                                        text=STARTING_GAME_MSG)
             self._root.after(LONGER_WAIT_PERIOD, self.__fix_display_msg)
@@ -258,11 +261,19 @@ class GUI:
             self.__fix_display_msg()
 
     def __play_a_random_turn(self):
-            location = choice(self.__random_possible_targets)
-            self.__random_possible_targets.remove(location)
-            self.play_a_turn(location[0], location[1])
+        """
+         plays a random turn for a random player.
+        """
+        location = choice(self.__random_possible_targets)
+        self.__random_possible_targets.remove(location)
+        self.play_a_turn(location[0], location[1])
 
     def play_a_turn(self, col, row):
+        """
+        plays a turn based on a chosen target.
+        :param row: the chosen row.
+        :param col: the chosen column.
+        """
         if self.__state == PLAYER_TURN:
             coords_got_hit = self.__game.play_a_turn(col, row)
             if len(coords_got_hit) == 0:
@@ -290,16 +301,30 @@ class GUI:
                 self.__game_over()
 
     def state(self):
+        """
+        :return: integer representing the current state of the game.
+        """
         return self.__state
 
     def get_tile(self, row, col, player):
-        if 0<= col < NUM_OF_COL and 0<= row < NUM_OF_ROW:
+        """
+        gets the tile object based on coordinates and player.
+        :param row: the chosen row.
+        :param col: the chosen column.
+        :param player: self or opponent.
+        :return: tile object.
+        """
+        if 0 <= col < NUM_OF_COL and 0 <= row < NUM_OF_ROW:
             if player:
                 return self.__enemy_tiles[row + col*NUM_OF_ROW]
             else:
                 return self.__self_tiles[row + col*NUM_OF_ROW]
 
     def __handle_message(self, text=None):
+        """
+        handle incoming massages from the other side of the network.
+        :param text: the incoming massage.
+        """
         if text:
             if (self.__state == SETTING_UP or
                     self.__state == WAITING_FOR_OPPONENT) and\
@@ -341,6 +366,9 @@ class GUI:
                     self.__game_over()
 
     def __game_over(self):
+        """
+        handle end of game.
+        """
         self.__fix_display_msg()
         if self.__game.get_winner() != player_num:
             if player_num == game.PLAYER1:
