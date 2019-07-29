@@ -6,15 +6,15 @@ by: aviad dudkevich
 =  Files:  =
 ============
 (code files):
-board.py -
-game.py -
-ships.py -
-communicator.py -
-Battleship.py -
+board.py - Board class and BoardTile class.
+game.py - Game class and the battle ship game logic.
+ships.py - Ship class.
+communicator.py - non-blocking socket interface to use with tkinter.
+Battleship.py - The GUI and the main program.
 (images):
-background.png
-target.png
-tile.png
+background.png - water background for the game
+target.png - red target
+tile.png - white frame.
 bshb.png - battle ship horizontal back
 bshbd.png - " " " back damaged
 bshf.png - " " " front
@@ -33,3 +33,30 @@ bsvmd.png - " " " middle damaged
 =  Description:  =
 ==================
 
+This game plays the classic game of battleship between two computers using
+network connection. This game could be played alone against a computer choosing
+randomly.
+
+
+This game created for fun from a final exercise in intro CS course. The original
+ game was 4-in-a-row and I wanted to reuse the concept of network game to this
+ game.
+
+================
+= How to play: =
+================
+Set up: this game plays between a server and one client.
+run Battleship.py with the flowing arguments:
+<player_type> <port> <ip>
+player_type - "human" or "random"
+port - self explanatory.
+ip - server should omit that, and client should input the server ip.
+
+phase 1 - placing ships: each player get 5 ships to put on his board (left) from
+ the longest ship to the shortest. To flip from horizontally and vertically
+ placing tap space key or right mouse click.
+phase 2 - each player in his turn get the chance to attack the other player
+board (using the right board). If fail - the other player get his turn.
+If succeed - the player get anther shot.
+
+winner - the player who blow up all the opponent ships.
